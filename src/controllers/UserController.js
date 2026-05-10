@@ -2,11 +2,26 @@ const userModel = require("../models/UserModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const config = require("../config/config");
+const validator = require("validator");
 
 // User Registration
 // POST /api/user/register
 const UserRegistered = async (req, res) => {
-  const { name, email, password } = req.body;
+ try {
+   const { name, email, password } = req.body;
+
+  // Validate input
+  if (!name || !email || !password) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  if (!validator.isEmail(email)) {
+    return res.status(400).json({ message: "Invalid email format" });
+  }
+
+  if (!validator.isLength(password, { min: 4 })) {
+    return res.status(400).json({ message: "Password must be at least 4 characters long" });
+  }
 
   const isUserExist = await userModel.findOne({
     email: email,
@@ -47,6 +62,9 @@ const UserRegistered = async (req, res) => {
     },
     token,
   });
+ } catch (err) {
+    console.error(err, "Error in User Registration");
+ }
 };
 
 
@@ -66,8 +84,7 @@ const UserLogin = async (req,res) => {
   if (!isMatch) {
     return res.status(400).json({ message: "Invalid password" });
   }
-
-  const token = jwt.sign(
+    const token = jwt.sign(
     {
       id: user._id,
     },
@@ -97,6 +114,9 @@ const UserLogout = async (req,res) => {
   res.status(200).json({ message: "User logged out successfully" });
 
 }
+
+
+
 module.exports = {
   UserRegistered,
   UserLogin,
