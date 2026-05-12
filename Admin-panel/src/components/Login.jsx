@@ -18,13 +18,13 @@ const Login = ({ setToken }) => {
            if (response.data.token) {
             setToken(response.data.token); 
             localStorage.setItem('token', response.data.token); 
-            toast.success(response.data.message);
+            toast.success({ autoClose: 2000 }, response.data.message);
         } else {
-            toast.error(response.data.message || "Login failed");
+            toast.error({ autoClose: 2000 }, response.data.message || "Login failed");
         }
         } catch (error) {
             console.error("Login failed:", error);
-            toast.error("An error occurred while logging in.");
+            toast.error({ autoClose: 2000 }, "An error occurred while logging in.");
         }
     }
     return (
