@@ -32,7 +32,7 @@ const App = () => {
             <div className='w-[70%] mx-auto my-8 ml-[max(5vw,25px)] text-gray-600 text-base'>
               <Routes>
                 <Route path='/add' element={<AddItems  />} />
-                <Route path='/list' element={<ListItems  />} />
+                <Route path='/list' element={<ListItems token={token} />} />
                 <Route path='/orders' element={<Orders />} />
               </Routes>
             </div>

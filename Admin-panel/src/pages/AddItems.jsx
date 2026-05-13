@@ -49,7 +49,7 @@ const AddItems = () => {
       const response = await axios.post(backendUrl + "/api/product/add", formData, { withCredentials:true });
 
       if (response.data.success) {
-        toast.update(toastId, { render: "Product added successfully!", type: "success", isLoading: false, autoClose: 2000 });
+        toast.success(toastId, { render: "Product added successfully!", isLoading: false, autoClose: 2000 });
         
 
         setProductName('');
